@@ -1,5 +1,18 @@
 # d4m-nfs
 
+## Quick Start
+
+1. Remove the default file shares from Docker preferences:
+![D4M Minimal File Sharing](/examples/img/d4m-min-file-sharing.png?raw=true "D4M Minimal File Sharing")
+2. Install d4m
+```bash
+git clone https://github.com/IFTTT/d4m-nfs
+cd d4m-nfs
+./d4m-nfs.sh
+```
+
+## Description
+
 With the Docker for Mac's (D4M) current implementation of osxfs, depending on how read and write heavy containers are on mounted volumes, performance can be abismal.
 
 d4m-nfs blantently steals from the way that DockerRoot/xhyve used NFS mounts to get around i/o performance issues. With this implementation D4M appears to even outperform DockerRoot/xhyve under a full Drupal stack (mariadb/redis/php-fpm/nginx/varnish/haproxy), including persistent MySQL databases.
