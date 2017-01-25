@@ -22,7 +22,7 @@ EXPORTS="# d4m-nfs exports\n"
 NFSUID=$(id -u)
 NFSGID=$(id -g)
 
-LIBDIR=/d4m-nfs
+LIBDIR=/opt/d4m-nfs
 sudo mkdir -p $LIBDIR
 sudo chown $USER $LIBDIR
 chmod 755 $LIBDIR
@@ -108,7 +108,7 @@ sntpc -i 10 \${DEFGW} &
 
 sleep .5
 mount -a
-touch /tmp/d4m-done
+touch ${LIBDIR}/d4m-done
 " > ${LIBDIR}/d4m-mount-nfs.sh
   chmod +x ${LIBDIR}/d4m-mount-nfs.sh
 
@@ -124,17 +124,21 @@ fi
 
 cp ${SDIR}/bin/d4m-nfs-start.sh ${LIBDIR}/
 
-cat > ${LIBDIR}/d4m-nfs.plist <<EOF
+cat > ~/Library/LaunchAgents/com.ifsight.d4m-nfs.plist <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
     <key>Label</key>
     <string>com.ifsight.d4m-nfs</string>
+    <key>RunAtLoad</key>
+    <true/>
     <key>WatchPaths</key>
     <array>
       <string>${HOME}/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty</string>
     </array>
+    <key>TimeOut</key>
+    <integer>100</integer>
     <key>Program</key>
     <string>${LIBDIR}/d4m-nfs-start.sh</string>
     <key>EnvironmentVariables</key>
@@ -146,4 +150,4 @@ cat > ${LIBDIR}/d4m-nfs.plist <<EOF
 </plist>
 EOF
 
-launchctl load -w ${LIBDIR}/d4m-nfs.plist
+launchctl load -w ~/Library/LaunchAgents/com.ifsight.d4m-nfs.plist
