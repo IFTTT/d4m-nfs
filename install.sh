@@ -137,8 +137,6 @@ cat > ~/Library/LaunchAgents/com.ifsight.d4m-nfs.plist <<EOF
     <array>
       <string>${HOME}/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty</string>
     </array>
-    <key>TimeOut</key>
-    <integer>100</integer>
     <key>Program</key>
     <string>${LIBDIR}/d4m-nfs-start.sh</string>
     <key>EnvironmentVariables</key>
