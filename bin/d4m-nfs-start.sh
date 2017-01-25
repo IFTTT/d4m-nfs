@@ -4,7 +4,7 @@ LIBDIR=$(dirname $0)
 
 rm -f ${LIBDIR}/d4m-done
 
-echo "[`date`][d4m-nfs] Waiting 10 seconds for the Docker VM to become ready"
+echo "[`date`][d4m-nfs] Waiting 30 seconds for the Docker VM to become ready"
 sleep 30
 echo "[`date`][d4m-nfs] Starting VM setup"
 
