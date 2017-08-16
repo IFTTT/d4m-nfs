@@ -8,10 +8,18 @@ while getopts ":q" opt; do
       README=false
       ;;
     \?)
-      echo "Invalid option: -$OPTARG" >&2
+      echo "[d4m-nfs] Invalid option: -$OPTARG" >&2
       ;;
   esac
 done
+
+# check if this script is running under tmux, and if so, exit
+# tmux sets $TERM=screen or user sets $TERM=screen-256color
+# (under tmux, we are unable to attach to the d4m tty via screen)
+if { [[ "$TERM" =~ screen* ]] && [ -n "$TMUX" ]; } then
+  echo "[d4m-nfs] This script cannot be run under tmux. Exiting."
+  exit 1
+fi
 
 # env var to specify whether we want our home bound to /mnt
 AUTO_MOUNT_HOME=${AUTO_MOUNT_HOME:-true}
@@ -130,7 +138,7 @@ touch /tmp/d4m-done
 " > /tmp/d4m-mount-nfs.sh
 
   echo -e "[d4m-nfs] Start and restop nfsd, for some reason restart is not as kind."
-  sudo nfsd stop && sudo nfsd start
+  sudo killall -9 nfsd ; sudo nfsd start
 
   echo -n "[d4m-nfs] Wait until NFS is setup."
   while ! rpcinfo -u localhost nfs > /dev/null 2>&1; do
